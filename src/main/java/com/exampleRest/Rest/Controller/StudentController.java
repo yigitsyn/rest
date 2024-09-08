@@ -2,16 +2,14 @@ package com.exampleRest.Rest.Controller;
 
 import com.exampleRest.Rest.Exception.StudentIDZeroException;
 import com.exampleRest.Rest.bean.Student;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class StudentController {
+    // @GetMapping(gelen http get isteğinin eşlemek için)
     //return object
     //http://localhost:8080/student
     @GetMapping("student")
@@ -64,12 +62,28 @@ public class StudentController {
     // Spring Boot REST API with Path Variable
     //{id} _ URL template variable
     //http://localhost:8080/students/1
+    //@PathVariable is used to extract values directly from the URI path itself.
     //GETMapping variable name ile input variable aynı isimde
     @GetMapping("students/path/{id}")
     public Student studentPathVariableAW(@PathVariable int id){
         return new Student(id,"Yigit","Sayinn");
 
     }
+
+    // Spring boot Rest API with RequestParam
+    //http://localhost:8080/students/query?id=1
+    //@RequestParam is used to extract query parameters from the URL.
+    @GetMapping("students/query")
+    public Student studentRequestVariable(@RequestParam int id){
+        return new Student(id,"yig","sayin");
+    }
+    //http://localhost:8080/students/query/studentRequestVariableAll?id=1&firstName=yig&lastName=yig
+    @GetMapping("students/query/studentRequestVariableAll")
+    public Student studentRequestVariableAll(@RequestParam int id, @RequestParam("firstName") String first,@RequestParam("lastName") String last){
+        return new Student(id,first,last);
+    }
+
+
 }
 
 

@@ -2,6 +2,7 @@ package com.exampleRest.Rest.Controller;
 
 import com.exampleRest.Rest.Exception.StudentIDZeroException;
 import com.exampleRest.Rest.bean.Student;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -83,6 +84,35 @@ public class StudentController {
         return new Student(id,first,last);
     }
 
+    // Spring boot REST API that handles HTTP POST Request -> create new resource
+    // @PostMappinf and @RequestBody
+    // @PostMapping is used for mapping Http Post Request
+    // @RequestBody internally uses Spring provided HttpMessageConverter to convert JSON into Java object
+    @PostMapping("students/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Student createStudent(@RequestBody Student student){
+        System.out.println(student.getId());
+        System.out.println(student.getFirstName());
+        System.out.println(student.getLastName());
+        return student;
+    }
+
+    // Spring boot REST API that handles HTTP PUT Request - updating existing resource
+    @PutMapping("students/{id}/update")
+    public Student updateStudent(@RequestBody Student student,@PathVariable("id") int studentId ){
+        System.out.println(student.getFirstName());
+        System.out.println(student.getLastName());
+        return student;
+    }
+
+    //Spring boot REST API that handles HTTP delete - deleting existing resources
+    @DeleteMapping("students/{id}/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public String deleteStudent(@PathVariable("id") int studentId){
+        System.out.println(studentId);
+        return "Student deleted successfully";
+
+    }
 
 }
 

@@ -10,10 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequestMapping("students") // classta ortak olanlar için /students/ ifadelerini çıkartabiliriz.
 public class StudentController {
     // @GetMapping(gelen http get isteğinin eşlemek için)
     //return object
     //http://localhost:8080/student
+    /*
     @GetMapping("student")
     public Student getStudent(){
         // obje döndüğümüzde format json oluyor.
@@ -115,6 +117,8 @@ public class StudentController {
 
     }
 
+     */
+
     //
     @GetMapping("student/getStudentResponseEntity")
     public ResponseEntity<Student> getStudentResponseEntity(){
@@ -127,7 +131,7 @@ public class StudentController {
     }
 
     //http://localhost:8080/students/getStudentsResponseEntity
-    @GetMapping("/students/getStudentsResponseEntity")
+    @GetMapping("/getStudentsResponseEntity")
     public ResponseEntity<List<Student>> getStudentsResponseEntity(){
         List<Student> students = new ArrayList<Student>();
         students.add(new Student(1,"Yigit","Sayin"));
@@ -138,8 +142,8 @@ public class StudentController {
     }
 
 
-    //http://localhost:8080/students/1/yig/say
-    @GetMapping("students/studentPathVariableAllVariableResponseEntity/{id}/{firstName}/{lastName}")
+    //http://localhost:8080/students/PathVariableAllVariableResponseEntity/1/yig/yig1
+    @GetMapping("PathVariableAllVariableResponseEntity/{id}/{firstName}/{lastName}")
     public ResponseEntity<Student> studentPathVariableAllVariableResponseEntity(@PathVariable("id") int studentId,
                                                   @PathVariable String firstName,
                                                   @PathVariable String lastName) {
@@ -155,14 +159,15 @@ public class StudentController {
 
     }
     //http://localhost:8080/students/query/studentRequestVariableAll?id=1&firstName=yig&lastName=yig
-    @GetMapping("students/query/studentRequestVariableAllResponseEntity")
+    @GetMapping("query/studentRequestVariableAllResponseEntity")
         public ResponseEntity<Student> studentRequestVariableAllResponseEntity(@RequestParam int id, @RequestParam("firstName") String first,@RequestParam("lastName") String last){
              Student student = new Student(id,first,last);
              return ResponseEntity.ok(student);
         }
 
     //We don't need to use @HttpStatus annotation ResponseEntity handle in the return
-    @PostMapping("students/createStudentResponseEntity")
+    //students/createStudentResponseEntity
+    @PostMapping("createStudentResponseEntity")
     //@ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Student> createStudentResponseEntity(@RequestBody Student student){
         System.out.println(student.getId());
@@ -171,15 +176,17 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.CREATED);
     }
 
-    @PutMapping("students/{id}/updateStudentResponseEntity")
+    //http://localhost:8080/students/1/updateStudentResponseEntity
+    @PutMapping("{id}/updateStudentResponseEntity")
     public ResponseEntity<Student> updateStudentResponseEntity(@RequestBody Student student,@PathVariable("id") int studentId ){
         System.out.println(student.getFirstName());
         System.out.println(student.getLastName());
         return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping("students/{id}/deleteStudentResponseEntity")
+    @DeleteMapping("{id}/deleteStudentResponseEntity")
     //@ResponseStatus(HttpStatus.NO_CONTENT)
+    //http://localhost:8080/students/3/deleteStudentResponseEntity
     // HttpStatus.NO_CONTENT (204): Sunucu isteği başarılı bir şekilde işlediğini belirtir ancak yanıt gövdesi boştur. Gövdeye yazılan bir veri olsa bile, kullanıcıya gönderilmez.
     //HttpStatus.CREATED (201): Sunucu isteği başarılı bir şekilde işlediğini ve yeni bir kaynak oluşturduğunu belirtir. Yanıt gövdesinde "selamlar" gibi bir içerik gönderilebilir.
     public ResponseEntity<String> deleteStudentResponseEntity(@PathVariable("id") int studentId){
